@@ -1,14 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
 
-    <t t-inherit="web.Dialog.header" t-inherit-mode="extension" owl="1">
+    <!-- Header of the standard dialogs and of the dialogs rendering it from their own template -->
+    <t t-inherit="web.Dialog.header" t-inherit-mode="extension">
         <xpath expr="//button[hasclass('btn-close')]" position="before">
-            <ExpandButton
-                getsize="getSize"
-                getoriginalsize="getOriginalSize"
-                setsize="setSize"
-                t-if="!isFullscreen and getSize and setSize"
-            />
+            <t t-call="web_dialog_size.MaximizeButton"/>
         </xpath>
+    </t>
+
+    <!-- web.ActionDialog.header is a primary copy of web.Dialog.header: it does not get the extension above -->
+    <t t-inherit="web.ActionDialog.header" t-inherit-mode="extension">
+        <xpath expr="//button[hasclass('btn-close')]" position="before">
+            <t t-call="web_dialog_size.MaximizeButton"/>
+        </xpath>
+    </t>
+
+    <t t-name="web_dialog_size.MaximizeButton">
+        <button
+            type="button"
+            class="btn btn-secondary"
+            t-att-class="this.wdsMaximized ? 'dialog_button_restore' : 'dialog_button_extend'"
+            t-on-click="this.wdsToggleMaximize"
+        >
+            <i class="fa" t-att-class="this.wdsMaximized ? 'fa-window-restore' : 'fa-window-maximize'" />
+        </button>
     </t>
 </templates>
