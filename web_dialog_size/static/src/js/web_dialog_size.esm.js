@@ -62,7 +62,9 @@ patch(Dialog.prototype, {
     setSize(size) {
         this._forcedSize = size;
         this.props.size = size;
-        this.render();
+        // deep render: ExpandButton only gets functions as props, a shallow
+        // render would not refresh its maximize/restore icon
+        this.render(true);
     },
 
     getSize() {
@@ -79,7 +81,8 @@ patch(SelectCreateDialog.prototype, {
 
     setSize(size) {
         this.props.size = size;
-        this.render();
+        // deep render, see Dialog.setSize
+        this.render(true);
     },
 
     getSize() {
@@ -92,6 +95,7 @@ SelectCreateDialog.components = Object.assign(SelectCreateDialog.components || {
     ExpandButton,
 });
 Dialog.components = Object.assign(Dialog.components || {}, {ExpandButton});
-// Patch annoying validation method
-Dialog.props.size.validate = (s) =>
-    ["sm", "md", "lg", "xl", "dialog_full_screen"].includes(s);
+// Keep Odoo's standard dialog sizes and add the custom maximized size.
+const coreValidateDialogSize = Dialog.props.size.validate;
+Dialog.props.size.validate = (size) =>
+    coreValidateDialogSize(size) || size === "dialog_full_screen";
