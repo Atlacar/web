@@ -35,5 +35,8 @@
                 "/web_dialog_size/static/src/xml/select_create_dialog.xml",
             ),
         ],
+        "web.assets_unit_tests": [
+            "web_dialog_size/static/tests/**/*",
+        ],
     },
 }
