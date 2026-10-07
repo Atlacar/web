@@ -87,7 +87,9 @@ patch(Dialog.prototype, {
     setSize(size) {
         this._forcedSize = size;
         this.props.size = size;
-        this.render();
+        // deep render: ExpandButton only gets functions as props, a shallow
+        // render would not refresh its maximize/restore icon
+        this.render(true);
     },
 
     getSize() {
@@ -141,7 +143,9 @@ patch(SelectCreateDialog.prototype, {
 
     setSize(size) {
         this.props.size = size;
-        this.render();
+        // deep render: ExpandButton only gets functions as props, a shallow
+        // render would not refresh its maximize/restore icon
+        this.render(true);
     },
 
     getSize() {
